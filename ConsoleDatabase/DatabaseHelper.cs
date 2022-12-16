@@ -135,20 +135,20 @@ namespace ConsoleDatabase
                     for (var i = 0; i < result.FieldCount; i++)
                     {
                         Console.Write(result.GetName(i));
-                        IndentSpaces(8);
+                        ConsoleFormatter.IndentSpaces(8);
                     }
 
-                    AddDivider(result.FieldCount * 20);
+                    ConsoleFormatter.AddDivider(result.FieldCount * 20);
 
                     // displays rows
                     while (result.Read())
                     {
                         Console.Write(result["id"]);
-                        IndentSpaces(9);
+                        ConsoleFormatter.IndentSpaces(9);
                         Console.Write(result["name"]);
-                        IndentSpaces(9);
+                        ConsoleFormatter.IndentSpaces(9);
                         Console.Write(result["age"]);
-                        IndentSpaces(9);
+                        ConsoleFormatter.IndentSpaces(9);
                         Console.Write(result["occupation"]);
                         Console.WriteLine();
                     }
@@ -195,14 +195,5 @@ namespace ConsoleDatabase
             }
         }
 
-        private static void IndentSpaces(int amount = 8)
-        {
-            Console.Write(string.Concat(Enumerable.Repeat(" ", amount)));
-        }
-
-        private static void AddDivider(int length = 10)
-        {
-            Console.WriteLine("\n" + string.Concat(Enumerable.Repeat("-", length)));
-        }
     }
 }

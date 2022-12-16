@@ -1,5 +1,4 @@
 ﻿using Microsoft.Data.Sqlite;
-using System.Net.Http.Headers;
 
 namespace ConsoleDatabase
 {
@@ -7,6 +6,13 @@ namespace ConsoleDatabase
     {
         static void Main(string[] args)
         {
+
+            //bool running = true;
+
+            //while(running == true)
+            //{
+            //    Console.WriteLine("Database Manager");
+            //}
 
             // DatabaseHelper.CreatePersonTable();
 
