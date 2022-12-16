@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
+using System.Xml.Linq;
 
 namespace ConsoleDatabase
 {
@@ -103,14 +104,59 @@ namespace ConsoleDatabase
             }
         }
 
-        public static void DeleteRow()
+        public static void DeleteRow(string tableName, int id)
         {
+            try
+            {
+                SqliteConnection connection = new SqliteConnection("DataSource=database.db");
+                connection.Open();
 
+                string stringQuery =
+                    $@"
+                        DELETE FROM {tableName}
+                        WHERE id={id}
+                    ";
+
+                SqliteCommand query = new SqliteCommand(stringQuery, connection);
+                query.ExecuteNonQuery();
+
+                connection.Close();
+
+                Console.WriteLine($"Row with ID {id} table dropped successfully from table {tableName}");
+                Console.ReadLine();
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error deleting row");
+                Console.WriteLine(e.Message);
+            }
         }
 
-        public static void UpdateRow()
+        public static void UpdateRow(string tableName, string column, string needle, string data)
         {
+            try
+            {
+                SqliteConnection connection = new SqliteConnection("DataSource=database.db");
+                connection.Open();
 
+                string row = $@"UPDATE {tableName}
+                               SET {column}={data}";
+
+                SqliteCommand query = new SqliteCommand(row, connection);
+                query.ExecuteNonQuery();
+
+
+                connection.Close();
+
+                Console.WriteLine($"Updated {name} table dropped successfully");
+                Console.ReadLine();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error dropping {name} tables");
+                Console.WriteLine(e.Message);
+            }
         }
 
         public static void ViewAll(string name)
@@ -122,7 +168,7 @@ namespace ConsoleDatabase
 
                 string stringQuery =
                     $@"
-                        SELECT * FROM {name};
+                        SELECT * FROM {name}
                     ";
 
                 SqliteCommand query = new SqliteCommand(stringQuery, connection);
@@ -135,20 +181,20 @@ namespace ConsoleDatabase
                     for (var i = 0; i < result.FieldCount; i++)
                     {
                         Console.Write(result.GetName(i));
-                        ConsoleFormatter.IndentSpaces(8);
+                        ConsoleHelper.IndentSpaces(8);
                     }
 
-                    ConsoleFormatter.AddDivider(result.FieldCount * 20);
+                    ConsoleHelper.AddDivider(result.FieldCount * 20, true);
 
                     // displays rows
                     while (result.Read())
                     {
                         Console.Write(result["id"]);
-                        ConsoleFormatter.IndentSpaces(9);
+                        ConsoleHelper.IndentSpaces(9);
                         Console.Write(result["name"]);
-                        ConsoleFormatter.IndentSpaces(9);
+                        ConsoleHelper.IndentSpaces(4);
                         Console.Write(result["age"]);
-                        ConsoleFormatter.IndentSpaces(9);
+                        ConsoleHelper.IndentSpaces(9);
                         Console.Write(result["occupation"]);
                         Console.WriteLine();
                     }
@@ -165,7 +211,7 @@ namespace ConsoleDatabase
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Error dropping {name} tables");
+                Console.WriteLine($"Error viewing {name} tables");
                 Console.WriteLine(e.Message);
             }
         }

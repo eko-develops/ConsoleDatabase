@@ -8,54 +8,96 @@ namespace ConsoleDatabase
         {
 
             bool running = true;
+            string tableName;
+            string username;
+            string occupation;
+            string column;
+            int id;
+            int age;
+            string data;
+            string needle;
 
 
             while (running == true)
             {
-                string title = "Database Manager";
-                Console.WriteLine(title.PadLeft(20, ' '));
+                ConsoleHelper.DisplayMenu();
 
-                ConsoleFormatter.AddDivider(40, true);
+                string input = ConsoleHelper.GetCommand();
 
-                ConsoleFormatter.IndentSpaces();
-                Console.Write("Please select an option: \n\n");
-
-                string[] menuItems =
+                switch (input)
                 {
-                    "Create Table",
-                    "View Table",
-                    "Add Row",
-                    "Delete Row",
-                    "Delete Table",
-                    "Quit"
-                };
+                    case "1":
+                        DatabaseHelper.CreatePersonTable();
+                        break;
+                    case "2":
+                        Console.Write("Enter a table name to view: ");
+                        tableName = Console.ReadLine();
+                        
+                        DatabaseHelper.ViewAll(tableName);
 
-                int menuItemMaxChar = 20;
+                        break;
+                    case "3":
+                        Console.Write("Enter an ID: ");
+                        id = Convert.ToInt32(Console.ReadLine());
 
-                for(int i = 0; i < menuItems.Length; i++)
-                {
-                    string prompt = menuItems[i];
-                    int n = menuItemMaxChar - prompt.Length;
-                    string pad = new String(' ', n);
-                    Console.WriteLine("{0}{1} - {2}", pad, menuItems[i], i + 1);
+                        Console.Write("Enter a name: ");
+                        username = Console.ReadLine();
+
+                        Console.Write("Enter an age: ");
+                        age = Convert.ToInt32(Console.ReadLine());
+
+                        Console.Write("Enter an occupation: ");
+                        occupation = Console.ReadLine();
+
+                        DatabaseHelper.AddRow(id, username, age, occupation);
+                      
+                        break;
+                    case "4":
+                        Console.Write("Enter a table to search: ");
+                        tableName = Console.ReadLine();
+
+                        Console.Write("Enter a column to search: ");
+                        column = Console.ReadLine();
+
+                        Console.Write("Enter data to search for: ");
+                        needle = Console.ReadLine();
+
+                        Console.Write("Enter new data: ");
+                        data = Console.ReadLine();
+
+                        DatabaseHelper.UpdateRow(tableName, column, needle, data);
+
+                        break;
+                    case "5":
+                        Console.Write("Enter a table to search: ");
+                        tableName = Console.ReadLine();
+
+                        Console.Write("Enter an ID to delete: ");
+                        id = Convert.ToInt32(Console.ReadLine());
+
+                        DatabaseHelper.DeleteRow(tableName, id);
+                       
+                        break;
+                    case "6":
+                        Console.Write("Enter a table name: ");
+                        tableName = Console.ReadLine();
+                       
+                        DatabaseHelper.DropTable(tableName);
+                       
+                        break;
+                    case "7":
+                        running = false;
+                       
+                        break;
                 }
 
-                Console.Write("\nenter command: ");
-                string input = Console.ReadLine();
-
-                Console.WriteLine(input);
-
-                running = false;
 
             }
 
-            //DatabaseHelper.CreatePersonTable();
+            Console.WriteLine("Terminating program...");
 
-            // DatabaseHelper.AddRow(2, "Jane", 25, "manager");
 
-            // DatabaseHelper.ViewAll("Person");
 
-            // DatabaseHelper.DropTable("Person");
 
             Console.ReadKey();
         }
