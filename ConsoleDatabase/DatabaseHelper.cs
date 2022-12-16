@@ -8,6 +8,7 @@ namespace ConsoleDatabase
     class DatabaseHelper
     {
         
+        // thinking of creating a Connection class to handle opening and closing connections
         public static void CreateConnection()
         {
 
@@ -50,7 +51,7 @@ namespace ConsoleDatabase
                 connection.Close();
 
                 Console.WriteLine("Table created successfully");
-                Console.ReadLine();
+                ConsoleHelper.CommandEnd();
             }
             catch(SqliteException e)
             {
@@ -107,7 +108,7 @@ namespace ConsoleDatabase
                 connection.Close();
 
                 Console.WriteLine($"Row added successfully");
-                Console.ReadLine();
+                ConsoleHelper.CommandEnd();
             }
             catch (Exception e) {
                 Console.WriteLine("Error adding row");
@@ -134,7 +135,7 @@ namespace ConsoleDatabase
                 connection.Close();
 
                 Console.WriteLine($"Row with ID {id} table dropped successfully from table {tableName}");
-                Console.ReadLine();
+                ConsoleHelper.CommandEnd();
 
             }
             catch (Exception e)
@@ -163,7 +164,7 @@ namespace ConsoleDatabase
                 connection.Close();
 
                 Console.WriteLine($"Updated {updateColumn} to {data} where {column} = {needle}");
-                Console.ReadLine();
+                ConsoleHelper.CommandEnd();
             }
             catch (Exception e)
             {
@@ -223,7 +224,7 @@ namespace ConsoleDatabase
                 connection.Close();
 
                 Console.WriteLine($"\nViewing {name} table");
-                Console.ReadLine();
+                ConsoleHelper.CommandEnd();
             }
             catch (Exception e)
             {
@@ -248,7 +249,7 @@ namespace ConsoleDatabase
                 connection.Close();
 
                 Console.WriteLine($"{name} table dropped successfully");
-                Console.ReadLine();
+                ConsoleHelper.CommandEnd();
             }
             catch (Exception e)
             {
@@ -275,13 +276,15 @@ namespace ConsoleDatabase
                 {
                     while (result.Read())
                     {
-                        Console.WriteLine("{0}\t{1}", result.GetInt32(0), result.GetString(0));
+                        Console.WriteLine("\n{0}\t{1}\n", result.GetInt32(0), result.GetString(0));
                     }
                 }
                 else
                 {
-                    Console.WriteLine("No tables found in database.");
+                    Console.WriteLine("\n\nNo tables found in database.\n\n");
                 }
+
+                ConsoleHelper.CommandEnd();
             }
             catch(Exception e)
             {

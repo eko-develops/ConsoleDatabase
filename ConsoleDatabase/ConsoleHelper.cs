@@ -63,5 +63,12 @@ namespace ConsoleDatabase
             }
 
         }
+
+
+        public static void CommandEnd()
+        {
+            Console.Write("Press enter to continue\n\n");
+            Console.ReadLine();
+        }
     }
 }
