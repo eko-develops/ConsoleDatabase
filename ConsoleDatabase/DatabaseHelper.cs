@@ -1,7 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
-using Microsoft.VisualBasic;
-using System.Collections.Generic;
-using System.Xml.Linq;
+
 
 namespace ConsoleDatabase
 {
@@ -72,26 +70,35 @@ namespace ConsoleDatabase
             {
                 SqliteConnection connection = new SqliteConnection("DataSource=database.db");
 
-                SqliteParameter idParam = new SqliteParameter(Convert.ToString(id), 1);
-                SqliteParameter nameParam = new SqliteParameter(name, 3);
-                SqliteParameter ageParam = new SqliteParameter(Convert.ToString(age), 1);
-                SqliteParameter occupationParam = new SqliteParameter(occupation, 3);
+                SqliteParameter idParam = new SqliteParameter("$id", 1);
+                idParam.Value = id;
 
+                SqliteParameter nameParam = new SqliteParameter("$name", 3);
+                nameParam.Value = name;
 
-                connection.Open();
+                SqliteParameter ageParam = new SqliteParameter("$age", 1);
+                ageParam.Value = age;
+
+                SqliteParameter occupationParam = new SqliteParameter("$occupation", 3);
+                occupationParam.Value = occupation;
 
                 string row =
                     @"
-                        INSERT INTO Person
+                        INSERT INTO Person (id, name, age, occupation)
                         VALUES ($id, $name, $age, $occupation)
                     ";
 
+                connection.Open();
+
                 SqliteCommand query = new SqliteCommand(row, connection);
 
-                query.Parameters.AddWithValue("$id", id);
-                query.Parameters.AddWithValue("$name", name);
-                query.Parameters.AddWithValue("$age", age);
-                query.Parameters.AddWithValue("$occupation", occupation);
+                SqliteParameter[] sqliteParams = { idParam, nameParam, ageParam, occupationParam };
+
+                foreach(SqliteParameter param in sqliteParams)
+                {
+                    query.Parameters.Add(param);
+                }
+
                 query.ExecuteNonQuery();
 
 
