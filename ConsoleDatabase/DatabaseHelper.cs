@@ -8,33 +8,6 @@ namespace ConsoleDatabase
     class DatabaseHelper
     {
         
-        // thinking of creating a Connection class to handle opening and closing connections
-        public static void CreateConnection()
-        {
-
-            try
-            {
-                SqliteConnection connection = new SqliteConnection("DataSource=database.db");
-
-                connection.Open();
-
-                Console.WriteLine($"Connection is {connection.State}");
-
-            }
-            catch(SqliteException e)
-            {
-                Console.WriteLine("SQlite Exception:");
-                Console.WriteLine(e.Message);
-    
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Exception:");
-                Console.WriteLine(e.Message);
-            }
-
-        }
-
         public static void CreatePersonTable()
         {
             try
@@ -42,12 +15,16 @@ namespace ConsoleDatabase
                 Connection connection = new Connection("DataSource=database.db");
                 connection.OpenConnection();
 
+                //SqliteConnection connection = new SqliteConnection("DataSource=database.db");
+                //connection.Open();
+
                 // creating table
                 string table = $"CREATE TABLE Person (ID integer primary key, NAME text, AGE integer, OCCUPATION text)";
                 SqliteCommand query = new SqliteCommand(table, connection);
                 query.ExecuteNonQuery();
 
                 connection.CloseConnection();
+                //connection.Close();
 
                 Console.WriteLine("Table created successfully");
                 ConsoleHelper.CommandEnd();
@@ -59,8 +36,8 @@ namespace ConsoleDatabase
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exception: attempted to create table");
-                Console.WriteLine(e.Message);
+                Console.WriteLine("\n\nException: attempted to create table");
+                Console.WriteLine(e.Message+ "\n\n");
 
             }
 
