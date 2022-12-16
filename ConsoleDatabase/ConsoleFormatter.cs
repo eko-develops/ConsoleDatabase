@@ -9,9 +9,16 @@ namespace ConsoleDatabase
             Console.Write(string.Concat(Enumerable.Repeat(" ", amount)));
         }
 
-        public static void AddDivider(int length = 10)
+        public static void AddDivider(int length = 10, bool pad = false)
         {
-            Console.WriteLine("\n" + string.Concat(Enumerable.Repeat("-", length)));
+            if (pad)
+            {
+                Console.WriteLine("\n" + string.Concat(Enumerable.Repeat("-", length)) + "\n");
+            } else
+            {
+                Console.WriteLine(string.Concat(Enumerable.Repeat("-", length)));
+            }
+            
         }
     }
 }
