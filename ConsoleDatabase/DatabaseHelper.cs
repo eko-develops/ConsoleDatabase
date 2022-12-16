@@ -1,4 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
+using System;
+using System.Reflection.PortableExecutable;
 
 
 namespace ConsoleDatabase
@@ -209,12 +211,15 @@ namespace ConsoleDatabase
                         Console.Write(result["occupation"]);
                         Console.WriteLine();
                     }
+
+                    result.Close();
                 }
                 else
                 {
                     Console.WriteLine("Table is empty");
                 }
 
+                
                 connection.Close();
 
                 Console.WriteLine($"\nViewing {name} table");
@@ -248,6 +253,39 @@ namespace ConsoleDatabase
             catch (Exception e)
             {
                 Console.WriteLine($"Error dropping {name} tables");
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public static void GetAllTableNames()
+        {
+            try
+            {
+                List<SqliteDataReader> resultList = new List<SqliteDataReader>();
+
+                SqliteConnection connection = new SqliteConnection("DataSource=database.db");
+                connection.Open();
+
+                string tablesQuery = "SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY 1";
+
+                SqliteCommand query = new SqliteCommand(tablesQuery, connection);
+                SqliteDataReader result = query.ExecuteReader();
+
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        Console.WriteLine("{0}\t{1}", result.GetInt32(0), result.GetString(0));
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No tables found in database.");
+                }
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Error occured getting all table names");
                 Console.WriteLine(e.Message);
             }
         }

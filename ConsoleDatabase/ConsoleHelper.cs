@@ -31,6 +31,7 @@ namespace ConsoleDatabase
                     "Update Row",
                     "Delete Row",
                     "Delete Table",
+                    "View All Tables",
                     "Quit"
                 };
 

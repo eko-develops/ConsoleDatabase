@@ -90,8 +90,11 @@ namespace ConsoleDatabase
                        
                         break;
                     case "7":
-                        running = false;
+                        DatabaseHelper.GetAllTableNames();
                        
+                        break;
+                    case "8":
+                        running = false;
                         break;
                 }
 
