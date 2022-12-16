@@ -1,4 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
+using Microsoft.VisualBasic;
+using System.Collections.Generic;
 using System.Xml.Linq;
 
 namespace ConsoleDatabase
@@ -133,15 +135,17 @@ namespace ConsoleDatabase
             }
         }
 
-        public static void UpdateRow(string tableName, string column, string needle, string data)
+        public static void UpdateRow(string tableName, string column, string updateColumn, string needle, string data)
         {
             try
             {
                 SqliteConnection connection = new SqliteConnection("DataSource=database.db");
                 connection.Open();
 
-                string row = $@"UPDATE {tableName}
-                               SET {column}={data}";
+
+                string row = $@"UPDATE Person
+                               SET {updateColumn}='{data}'
+                                WHERE {column}='{needle}'";
 
                 SqliteCommand query = new SqliteCommand(row, connection);
                 query.ExecuteNonQuery();
@@ -149,12 +153,12 @@ namespace ConsoleDatabase
 
                 connection.Close();
 
-                Console.WriteLine($"Updated {name} table dropped successfully");
+                Console.WriteLine($"Updated {updateColumn} to {data} where {column} = {needle}");
                 Console.ReadLine();
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Error dropping {name} tables");
+                Console.WriteLine($"Error updating {updateColumn} to {data} where {column} = {needle}");
                 Console.WriteLine(e.Message);
             }
         }

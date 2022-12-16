@@ -16,6 +16,7 @@ namespace ConsoleDatabase
             int age;
             string data;
             string needle;
+            string updateColumn;
 
 
             while (running == true)
@@ -56,16 +57,19 @@ namespace ConsoleDatabase
                         Console.Write("Enter a table to search: ");
                         tableName = Console.ReadLine();
 
+                        Console.Write("Enter a column to update: ");
+                        updateColumn = Console.ReadLine();
+
+                        Console.Write("Enter new data to add: ");
+                        data = Console.ReadLine();
+
                         Console.Write("Enter a column to search: ");
                         column = Console.ReadLine();
 
-                        Console.Write("Enter data to search for: ");
+                        Console.Write("Enter data to search for in column: ");
                         needle = Console.ReadLine();
 
-                        Console.Write("Enter new data: ");
-                        data = Console.ReadLine();
-
-                        DatabaseHelper.UpdateRow(tableName, column, needle, data);
+                        DatabaseHelper.UpdateRow(tableName, column, updateColumn, needle, data);
 
                         break;
                     case "5":
