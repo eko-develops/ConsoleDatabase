@@ -39,16 +39,15 @@ namespace ConsoleDatabase
         {
             try
             {
-                SqliteConnection connection = new SqliteConnection("DataSource=database.db");
-
-                connection.Open();
+                Connection connection = new Connection("DataSource=database.db");
+                connection.OpenConnection();
 
                 // creating table
                 string table = $"CREATE TABLE Person (ID integer primary key, NAME text, AGE integer, OCCUPATION text)";
                 SqliteCommand query = new SqliteCommand(table, connection);
                 query.ExecuteNonQuery();
 
-                connection.Close();
+                connection.CloseConnection();
 
                 Console.WriteLine("Table created successfully");
                 ConsoleHelper.CommandEnd();
@@ -71,7 +70,7 @@ namespace ConsoleDatabase
         {
             try
             {
-                SqliteConnection connection = new SqliteConnection("DataSource=database.db");
+                Connection connection = new Connection("DataSource=database.db");
 
                 SqliteParameter idParam = new SqliteParameter("$id", 1);
                 idParam.Value = id;
@@ -91,7 +90,7 @@ namespace ConsoleDatabase
                         VALUES ($id, $name, $age, $occupation)
                     ";
 
-                connection.Open();
+                connection.OpenConnection();
 
                 SqliteCommand query = new SqliteCommand(row, connection);
 
@@ -105,7 +104,7 @@ namespace ConsoleDatabase
                 query.ExecuteNonQuery();
 
 
-                connection.Close();
+                connection.CloseConnection();
 
                 Console.WriteLine($"Row added successfully");
                 ConsoleHelper.CommandEnd();
@@ -120,8 +119,8 @@ namespace ConsoleDatabase
         {
             try
             {
-                SqliteConnection connection = new SqliteConnection("DataSource=database.db");
-                connection.Open();
+                Connection connection = new Connection("DataSource=database.db");
+                connection.OpenConnection();
 
                 string stringQuery =
                     $@"
@@ -132,7 +131,7 @@ namespace ConsoleDatabase
                 SqliteCommand query = new SqliteCommand(stringQuery, connection);
                 query.ExecuteNonQuery();
 
-                connection.Close();
+                connection.CloseConnection();
 
                 Console.WriteLine($"Row with ID {id} table dropped successfully from table {tableName}");
                 ConsoleHelper.CommandEnd();
@@ -149,8 +148,8 @@ namespace ConsoleDatabase
         {
             try
             {
-                SqliteConnection connection = new SqliteConnection("DataSource=database.db");
-                connection.Open();
+                Connection connection = new Connection("DataSource=database.db");
+                connection.OpenConnection();
 
 
                 string row = $@"UPDATE Person
@@ -161,7 +160,7 @@ namespace ConsoleDatabase
                 query.ExecuteNonQuery();
 
 
-                connection.Close();
+                connection.CloseConnection();
 
                 Console.WriteLine($"Updated {updateColumn} to {data} where {column} = {needle}");
                 ConsoleHelper.CommandEnd();
@@ -177,8 +176,8 @@ namespace ConsoleDatabase
         {
             try
             {
-                SqliteConnection connection = new SqliteConnection("DataSource=database.db");
-                connection.Open();
+                Connection connection = new Connection("DataSource=database.db");
+                connection.OpenConnection();
 
                 string stringQuery =
                     $@"
@@ -221,7 +220,7 @@ namespace ConsoleDatabase
                 }
 
                 
-                connection.Close();
+                connection.CloseConnection();
 
                 Console.WriteLine($"\nViewing {name} table");
                 ConsoleHelper.CommandEnd();
@@ -237,8 +236,9 @@ namespace ConsoleDatabase
         {
             try
             {
-                SqliteConnection connection = new SqliteConnection("DataSource=database.db");
-                connection.Open();
+
+                Connection connection = new Connection("DataSource=database.db");
+                connection.OpenConnection();
 
                 string row = $"DROP TABLE {name}";
 
@@ -246,7 +246,7 @@ namespace ConsoleDatabase
                 query.ExecuteNonQuery();
 
 
-                connection.Close();
+                connection.CloseConnection();
 
                 Console.WriteLine($"{name} table dropped successfully");
                 ConsoleHelper.CommandEnd();
@@ -264,8 +264,8 @@ namespace ConsoleDatabase
             {
                 List<SqliteDataReader> resultList = new List<SqliteDataReader>();
 
-                SqliteConnection connection = new SqliteConnection("DataSource=database.db");
-                connection.Open();
+                Connection connection = new Connection("DataSource=database.db");
+                connection.OpenConnection();
 
                 string tablesQuery = "SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY 1";
 
@@ -284,12 +284,14 @@ namespace ConsoleDatabase
                     Console.WriteLine("\n\nNo tables found in database.\n\n");
                 }
 
+                result.Close();
+                connection.CloseConnection();
                 ConsoleHelper.CommandEnd();
             }
             catch(Exception e)
             {
-                Console.WriteLine("Error occured getting all table names");
-                Console.WriteLine(e.Message);
+                Console.WriteLine("\n\nError occured getting all table names");
+                Console.WriteLine(e.Message + "\n\n");
             }
         }
 
