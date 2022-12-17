@@ -82,10 +82,13 @@ namespace ConsoleDatabase
                         Console.Write("Enter a table to search: ");
                         tableName = Console.ReadLine();
 
-                        Console.Write("Enter an ID to delete: ");
-                        id = Convert.ToInt32(Console.ReadLine());
+                        Console.Write("Enter a column to search: ");
+                        column = Console.ReadLine();
 
-                        DatabaseHelper.DeleteRow(tableName, id);
+                        Console.Write("Enter data to search: ");
+                        data = Console.ReadLine();
+
+                        DatabaseHelper.DeleteRow(tableName, column, data);
                        
                         break;
                     case "6":

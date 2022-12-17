@@ -82,7 +82,7 @@ namespace ConsoleDatabase
 
         }
 
-        public static void DeleteRow(string tableName, int id)
+        public static void DeleteRow(string tableName, string column, string value)
         {
             try
             {
@@ -92,7 +92,7 @@ namespace ConsoleDatabase
                 string query =
                     $@"
                         DELETE FROM {tableName}
-                        WHERE id={id}
+                        WHERE {column}='{value}'
                     ";
 
                 SqliteCommand command = new SqliteCommand(query, connection);
@@ -100,7 +100,7 @@ namespace ConsoleDatabase
 
                 connection.Close();
 
-                Console.WriteLine($"Row with ID {id} table dropped successfully from table {tableName}");
+                Console.WriteLine($"Row where {column} = {value} deleted successfully from table {tableName}");
 
             }
             catch (Exception e)
