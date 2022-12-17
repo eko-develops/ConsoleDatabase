@@ -8,14 +8,19 @@ namespace ConsoleDatabase
     class DatabaseHelper
     {
         
-        public static void CreatePersonTable()
+        public static void CreateTable(string name, string schema)
         {
             try
             {
+                // things that should happen
+                // - name should be capitalized
+                // - schema is a string for the columns ex. INT id primary key
+
+
                 SqliteConnection connection = new SqliteConnection("DataSource=database.db");
                 connection.Open();
 
-                string table = $"CREATE TABLE Person (ID integer primary key, NAME text, AGE integer, OCCUPATION text)";
+                string table = $"CREATE TABLE {name} ({schema})";
                 SqliteCommand query = new SqliteCommand(table, connection);
                 query.ExecuteNonQuery();
 
