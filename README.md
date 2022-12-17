@@ -2,4 +2,4 @@
 A console database made with C#
 
 ### To Do  
-Refactor
+- any parameters used as SQL need to be converted into parametized queries using SqliteSqliteParameter class
