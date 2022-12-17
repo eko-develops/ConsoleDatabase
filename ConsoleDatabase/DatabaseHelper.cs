@@ -12,10 +12,6 @@ namespace ConsoleDatabase
         {
             try
             {
-                // things that should happen
-                // - name should be capitalized
-                // - schema is a string for the columns ex. ID integer primary key, NAME text, AGE integer, OCCUPATION text
-
                 SqliteConnection connection = new SqliteConnection("DataSource=database.db");
                 connection.Open();
 
@@ -26,7 +22,7 @@ namespace ConsoleDatabase
                 connection.Close();
 
                 Console.WriteLine("Table created successfully");
-                ConsoleHelper.CommandEnd();
+
             }
             catch(SqliteException e)
             {
@@ -39,6 +35,8 @@ namespace ConsoleDatabase
                 Console.WriteLine(e.Message+ "\n\n");
 
             }
+
+            ConsoleHelper.CommandEnd();
 
         }
 
@@ -81,12 +79,14 @@ namespace ConsoleDatabase
                 connection.Close();
 
                 Console.WriteLine($"Row added successfully");
-                ConsoleHelper.CommandEnd();
             }
             catch (Exception e) {
                 Console.WriteLine("Error adding row");
                 Console.WriteLine(e.Message);
             }
+
+            ConsoleHelper.CommandEnd();
+
         }
 
         public static void DeleteRow(string tableName, int id)
@@ -108,7 +108,6 @@ namespace ConsoleDatabase
                 connection.Close();
 
                 Console.WriteLine($"Row with ID {id} table dropped successfully from table {tableName}");
-                ConsoleHelper.CommandEnd();
 
             }
             catch (Exception e)
@@ -116,6 +115,9 @@ namespace ConsoleDatabase
                 Console.WriteLine("Error deleting row");
                 Console.WriteLine(e.Message);
             }
+
+            ConsoleHelper.CommandEnd();
+
         }
 
         public static void UpdateRow(string tableName, string column, string updateColumn, string needle, string data)
@@ -137,13 +139,15 @@ namespace ConsoleDatabase
                 connection.Close();
 
                 Console.WriteLine($"Updated {updateColumn} to {data} where {column} = {needle}");
-                ConsoleHelper.CommandEnd();
             }
             catch (Exception e)
             {
                 Console.WriteLine($"Error updating {updateColumn} to {data} where {column} = {needle}");
                 Console.WriteLine(e.Message);
             }
+
+            ConsoleHelper.CommandEnd();
+
         }
 
         public static void ViewAll(string name)
@@ -196,13 +200,15 @@ namespace ConsoleDatabase
                 connection.Close();
 
                 Console.WriteLine($"\nViewing {name} table");
-                ConsoleHelper.CommandEnd();
             }
             catch (Exception e)
             {
                 Console.WriteLine($"Error viewing {name} tables");
                 Console.WriteLine(e.Message);
             }
+
+            ConsoleHelper.CommandEnd();
+
         }
 
         public static void DropTable(string name)
@@ -218,17 +224,18 @@ namespace ConsoleDatabase
                 SqliteCommand command = new SqliteCommand(query, connection);
                 command.ExecuteNonQuery();
 
-
                 connection.Close();
 
                 Console.WriteLine($"{name} table dropped successfully");
-                ConsoleHelper.CommandEnd();
             }
             catch (Exception e)
             {
                 Console.WriteLine($"Error dropping {name} tables");
                 Console.WriteLine(e.Message);
             }
+
+            ConsoleHelper.CommandEnd();
+
         }
 
         public static void GetAllTableNames()
@@ -260,15 +267,15 @@ namespace ConsoleDatabase
                 {
                     Console.WriteLine("\n\nNo tables found in database.\n\n");
                 }
-
-                ConsoleHelper.CommandEnd();
-
             }
             catch(Exception e)
             {
                 Console.WriteLine("\n\nError occured getting all table names");
                 Console.WriteLine(e.Message + "\n\n");
             }
+
+            ConsoleHelper.CommandEnd();
+
         }
 
     }
