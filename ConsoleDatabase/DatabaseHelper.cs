@@ -13,10 +13,18 @@ namespace ConsoleDatabase
             try
             {
                 SqliteConnection connection = new SqliteConnection("DataSource=database.db");
+
+                SqliteParameter schemaParam = CreateSqliteParameter(schema, "$schema", 3);
+                SqliteParameter nameParam = CreateSqliteParameter(name, "$name", 3);
+
+                string commandText = $"CREATE TABLE $name ('$schema')";
+                SqliteCommand command = new SqliteCommand(commandText, connection);
+                command.Parameters.Add(schemaParam);
+                command.Parameters.Add(nameParam);
+
+
                 connection.Open();
 
-                string query = $"CREATE TABLE {name} ({schema})";
-                SqliteCommand command = new SqliteCommand(query, connection);
                 command.ExecuteNonQuery();
 
                 connection.Close();
@@ -280,7 +288,7 @@ namespace ConsoleDatabase
             ConsoleHelper.CommandEnd();
 
         }
-        public static SqliteParameter CreateSqliteParameter(string value, string variable, int type)
+        private static SqliteParameter CreateSqliteParameter(string value, string variable, int type)
         {
             SqliteParameter param = new SqliteParameter(variable, type);
             param.Value = value;
