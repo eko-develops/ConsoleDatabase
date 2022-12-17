@@ -28,7 +28,13 @@ namespace ConsoleDatabase
                 switch (input)
                 {
                     case "1":
-                        DatabaseHelper.CreatePersonTable();
+                        Console.WriteLine("Enter a table name: ");
+                        tableName = Console.ReadLine();
+
+                        Console.WriteLine("Enter the column schema: ");
+                        data = Console.ReadLine();
+
+                        DatabaseHelper.CreateTable(tableName, data);
                         break;
                     case "2":
                         Console.Write("Enter a table name to view: ");

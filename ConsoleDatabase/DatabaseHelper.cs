@@ -14,8 +14,7 @@ namespace ConsoleDatabase
             {
                 // things that should happen
                 // - name should be capitalized
-                // - schema is a string for the columns ex. INT id primary key
-
+                // - schema is a string for the columns ex. ID integer primary key, NAME text, AGE integer, OCCUPATION text
 
                 SqliteConnection connection = new SqliteConnection("DataSource=database.db");
                 connection.Open();
