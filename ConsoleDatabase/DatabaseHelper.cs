@@ -143,6 +143,11 @@ namespace ConsoleDatabase
 
         }
 
+        // This method needs to be refactored to be agnostic
+        // It should be able to select all from a table without hardcoding the column names
+        // TODO: 
+        // - get column names, then display
+        // - get value for that column in the current row
         public static void ViewAll(string name)
         {
             try
@@ -208,7 +213,6 @@ namespace ConsoleDatabase
         {
             try
             {
-
                 SqliteConnection connection = new SqliteConnection("DataSource=database.db");
                 connection.Open();
 
