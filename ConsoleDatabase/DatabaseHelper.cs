@@ -40,6 +40,13 @@ namespace ConsoleDatabase
 
         }
 
+
+        // This method needs to be refactored to be agnostic
+        // Should be able to set a table, the column names to insert, and the values
+        // TODO: 
+        // - ask for table name
+        // - ask for columns to insert into
+        // - ask for values
         public static void AddRow(int id, string name, int age, string occupation)
         {
             try
@@ -48,8 +55,8 @@ namespace ConsoleDatabase
 
                 SqliteParameter idParam = CreateSqliteParameter(Convert.ToString(id), "$id", 1);
                 SqliteParameter nameParam = CreateSqliteParameter(name, "$name", 3);
-                SqliteParameter ageParam = CreateSqliteParameter(Convert.ToString(age), "age", 1);
-                SqliteParameter occupationParam = CreateSqliteParameter(occupation, "occupation", 3);
+                SqliteParameter ageParam = CreateSqliteParameter(Convert.ToString(age), "$age", 1);
+                SqliteParameter occupationParam = CreateSqliteParameter(occupation, "$occupation", 3);
                 SqliteParameter[] sqliteParams = { idParam, nameParam, ageParam, occupationParam };
 
                 string query =
