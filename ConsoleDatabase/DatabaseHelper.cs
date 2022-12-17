@@ -40,13 +40,6 @@ namespace ConsoleDatabase
 
         }
 
-        public static SqliteParameter CreateSqliteParameter(string value, string variable, int type)
-        {
-            SqliteParameter param = new SqliteParameter(variable, type);
-            param.Value = value;
-            return param;
-        }
-
         public static void AddRow(int id, string name, int age, string occupation)
         {
             try
@@ -276,6 +269,12 @@ namespace ConsoleDatabase
 
             ConsoleHelper.CommandEnd();
 
+        }
+        public static SqliteParameter CreateSqliteParameter(string value, string variable, int type)
+        {
+            SqliteParameter param = new SqliteParameter(variable, type);
+            param.Value = value;
+            return param;
         }
 
     }
