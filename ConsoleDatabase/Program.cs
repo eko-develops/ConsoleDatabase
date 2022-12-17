@@ -28,10 +28,10 @@ namespace ConsoleDatabase
                 switch (input)
                 {
                     case "1":
-                        Console.WriteLine("Enter a table name: ");
+                        Console.Write("Enter a table name: ");
                         tableName = Console.ReadLine();
 
-                        Console.WriteLine("Enter the column schema: ");
+                        Console.Write("Enter the column schema: ");
                         data = Console.ReadLine();
 
                         DatabaseHelper.CreateTable(tableName, data);
