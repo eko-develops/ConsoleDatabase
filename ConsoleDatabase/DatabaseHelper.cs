@@ -121,21 +121,20 @@ namespace ConsoleDatabase
                 connection.Open();
 
 
-                string query = $@"UPDATE Person
+                string query = $@"UPDATE {tableName}
                                SET {updateColumn}='{data}'
                                 WHERE {column}='{needle}'";
 
                 SqliteCommand command = new SqliteCommand(query, connection);
                 command.ExecuteNonQuery();
 
-
                 connection.Close();
 
-                Console.WriteLine($"Updated {updateColumn} to {data} where {column} = {needle}");
+                Console.WriteLine($"Updated {updateColumn} to {data} where {column} = {needle} in table {tableName}");
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Error updating {updateColumn} to {data} where {column} = {needle}");
+                Console.WriteLine($"Error updating {updateColumn} to {data} where {column} = {needle} in table {tableName}");
                 Console.WriteLine(e.Message);
             }
 
