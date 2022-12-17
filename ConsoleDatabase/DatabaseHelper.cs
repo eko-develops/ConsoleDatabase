@@ -19,9 +19,9 @@ namespace ConsoleDatabase
                 SqliteConnection connection = new SqliteConnection("DataSource=database.db");
                 connection.Open();
 
-                string table = $"CREATE TABLE {name} ({schema})";
-                SqliteCommand query = new SqliteCommand(table, connection);
-                query.ExecuteNonQuery();
+                string query = $"CREATE TABLE {name} ({schema})";
+                SqliteCommand command = new SqliteCommand(query, connection);
+                command.ExecuteNonQuery();
 
                 connection.Close();
 
@@ -42,25 +42,26 @@ namespace ConsoleDatabase
 
         }
 
+        public static SqliteParameter CreateSqliteParameter(string value, string variable, int type)
+        {
+            SqliteParameter param = new SqliteParameter(variable, type);
+            param.Value = value;
+            return param;
+        }
+
         public static void AddRow(int id, string name, int age, string occupation)
         {
             try
             {
                 SqliteConnection connection = new SqliteConnection("DataSource=database.db");
 
-                SqliteParameter idParam = new SqliteParameter("$id", 1);
-                idParam.Value = id;
+                SqliteParameter idParam = CreateSqliteParameter(Convert.ToString(id), "$id", 1);
+                SqliteParameter nameParam = CreateSqliteParameter(name, "$name", 3);
+                SqliteParameter ageParam = CreateSqliteParameter(Convert.ToString(age), "age", 1);
+                SqliteParameter occupationParam = CreateSqliteParameter(occupation, "occupation", 3);
+                SqliteParameter[] sqliteParams = { idParam, nameParam, ageParam, occupationParam };
 
-                SqliteParameter nameParam = new SqliteParameter("$name", 3);
-                nameParam.Value = name;
-
-                SqliteParameter ageParam = new SqliteParameter("$age", 1);
-                ageParam.Value = age;
-
-                SqliteParameter occupationParam = new SqliteParameter("$occupation", 3);
-                occupationParam.Value = occupation;
-
-                string row =
+                string query =
                     @"
                         INSERT INTO Person (id, name, age, occupation)
                         VALUES ($id, $name, $age, $occupation)
@@ -68,17 +69,14 @@ namespace ConsoleDatabase
 
                 connection.Open();
 
-                SqliteCommand query = new SqliteCommand(row, connection);
-
-                SqliteParameter[] sqliteParams = { idParam, nameParam, ageParam, occupationParam };
+                SqliteCommand command = new SqliteCommand(query, connection);
 
                 foreach(SqliteParameter param in sqliteParams)
                 {
-                    query.Parameters.Add(param);
+                    command.Parameters.Add(param);
                 }
 
-                query.ExecuteNonQuery();
-
+                command.ExecuteNonQuery();
 
                 connection.Close();
 
@@ -98,14 +96,14 @@ namespace ConsoleDatabase
                 SqliteConnection connection = new SqliteConnection("DataSource=database.db");
                 connection.Open();
 
-                string stringQuery =
+                string query =
                     $@"
                         DELETE FROM {tableName}
                         WHERE id={id}
                     ";
 
-                SqliteCommand query = new SqliteCommand(stringQuery, connection);
-                query.ExecuteNonQuery();
+                SqliteCommand command = new SqliteCommand(query, connection);
+                command.ExecuteNonQuery();
 
                 connection.Close();
 
@@ -128,12 +126,12 @@ namespace ConsoleDatabase
                 connection.Open();
 
 
-                string row = $@"UPDATE Person
+                string query = $@"UPDATE Person
                                SET {updateColumn}='{data}'
                                 WHERE {column}='{needle}'";
 
-                SqliteCommand query = new SqliteCommand(row, connection);
-                query.ExecuteNonQuery();
+                SqliteCommand command = new SqliteCommand(query, connection);
+                command.ExecuteNonQuery();
 
 
                 connection.Close();
@@ -155,19 +153,19 @@ namespace ConsoleDatabase
                 SqliteConnection connection = new SqliteConnection("DataSource=database.db");
                 connection.Open();
 
-                string stringQuery =
+                string query =
                     $@"
                         SELECT * FROM {name}
                     ";
 
-                SqliteCommand query = new SqliteCommand(stringQuery, connection);
+                SqliteCommand command = new SqliteCommand(query, connection);
                 
-                SqliteDataReader result = query.ExecuteReader();
+                SqliteDataReader result = command.ExecuteReader();
 
                 if (result.HasRows)
                 {
                     // displays the column names
-                    for (var i = 0; i < result.FieldCount; i++)
+                    for (int i = 0; i < result.FieldCount; i++)
                     {
                         Console.Write(result.GetName(i));
                         ConsoleHelper.IndentSpaces(8);
@@ -195,7 +193,6 @@ namespace ConsoleDatabase
                     Console.WriteLine("Table is empty");
                 }
 
-                
                 connection.Close();
 
                 Console.WriteLine($"\nViewing {name} table");
@@ -216,10 +213,10 @@ namespace ConsoleDatabase
                 SqliteConnection connection = new SqliteConnection("DataSource=database.db");
                 connection.Open();
 
-                string row = $"DROP TABLE {name}";
+                string query = $"DROP TABLE {name}";
 
-                SqliteCommand query = new SqliteCommand(row, connection);
-                query.ExecuteNonQuery();
+                SqliteCommand command = new SqliteCommand(query, connection);
+                command.ExecuteNonQuery();
 
 
                 connection.Close();
@@ -241,17 +238,21 @@ namespace ConsoleDatabase
                 SqliteConnection connection = new SqliteConnection("DataSource=database.db");
                 connection.Open();
 
-                string tablesQuery = "SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY 1";
+                string query = "SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY 1";
 
-                SqliteCommand query = new SqliteCommand(tablesQuery, connection);
-                SqliteDataReader result = query.ExecuteReader();
+                SqliteCommand command = new SqliteCommand(query, connection);
+                SqliteDataReader result = command.ExecuteReader();
 
                 if (result.HasRows)
                 {
+                    int count = 1;
+                    Console.Write("\n\n");
                     while (result.Read())
                     {
-                        Console.WriteLine("\n{0}\t{1}\n", result.GetInt32(0), result.GetString(0));
+                        Console.WriteLine("{0}\t{1}", count, result.GetString(0));
+                        count++;
                     }
+                    Console.WriteLine($"\n\nTotal Tables: {count - 1}\n\n");
                     result.Close();
                     connection.Open();
                 }
